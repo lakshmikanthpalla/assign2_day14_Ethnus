@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Task 1</title>
+     <style>
+          .bg {
+               text-align: center;
+               display: flex;
+               flex-direction: column;
+               justify-content: center;
+               align-items: center;
+               min-height: 100vh;
+               background-color: #f0f0f0;
+               text-transform: uppercase;
+          }
+
+          .head {
+               color: aqua;
+               font-family: Arial, Helvetica, sans-serif;
+               font-weight: bold;
+               font-size: 40px;
+          }
+
+          .time {
+               font-size: 30px;
+          }
+
+          button {
+               border: 0;
+               text-transform: uppercase;
+               margin-right: 15px;
+               padding: 10px;
+               font-weight: bold;
+               cursor: pointer;
+          }
+
+          #start {
+               background-color: cadetblue;
+          }
+
+          #stop {
+               background-color: red;
+          }
+
+          #reset {
+               background-color: cyan;
+          }
+     </style>
+</head>
+
+<body>
+     <div class="bg">
+          <h1 class="head">Timer</h1>
+          <p class="time"> <span id="min">25</span> : <span id="sec">00</span> </p>
+          <div>
+               <button type="button" id="start" onclick="start()"> Start </button>
+               <button type="button" id="stop" onclick="stop()"> Stop </button>
+               <button type="button" id="reset" onclick="reset()"> Reset </button>
+          </div>
+     </div>
+
+     <script>
+          const minEle = document.getElementById('min');
+          const secEle = document.getElementById('sec');
+          let min = 25;
+          let sec = 0;
+          let timerId = null;
+
+          function formatTime(value) {
+               return value < 10 ? `0${value}` : value;
+          }
+
+          function updateDisplay() {
+               minEle.textContent = formatTime(min);
+               secEle.textContent = formatTime(sec);
+          }
+
+          function start() {
+               if (timerId !== null) return; // Prevent multiple intervals
+
+               timerId = setInterval(() => {
+                    if (min === 0 && sec === 0) {
+                         clearInterval(timerId);
+                         timerId = null;
+                         return;
+                    }
+
+                    if (sec === 0) {
+                         if (min > 0) {
+                              min--;
+                              sec = 59;
+                         }
+                    } else {
+                         sec--;
+                    }
+
+                    updateDisplay();
+               }, 1000);
+          }
+
+          function stop() {
+               clearInterval(timerId);
+               timerId = null;
+          }
+
+          function reset() {
+               clearInterval(timerId);
+               timerId = null;
+               min = 25;
+               sec = 0;
+               updateDisplay();
+          }
+
+          // Initialize display
+          updateDisplay();
+     </script>
+</body>
+
+</html>
